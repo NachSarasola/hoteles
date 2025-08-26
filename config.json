@@ -21,7 +21,11 @@
     "metaImageUrl": "assets/img/og-image.png"
   },
   "contact": {
-    "whatsapp": "1234567890"
+    "phone": "555123456",
+    "whatsapp": "1234567890",
+    "email": "info@hotelparaiso.example",
+    "address": "Calle Principal 123, Ciudad, País",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345096185!2d144.96305791590477!3d-37.816279742021215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDQ5JzAxLjIiUyAxNDTCsDU3JzQ3LjQiRQ!5e0!3m2!1ses!2sus!4v1610000000000!5m2!1ses!2sus"
   },
   "booking": {
     "mode": "whatsapp",

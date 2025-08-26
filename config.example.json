@@ -20,7 +20,8 @@
       "email": "<REPLACE_ME>",
       "phone": "<REPLACE_ME>",
       "address": "<REPLACE_ME>",
-      "whatsapp": "<REPLACE_ME>"
+      "whatsapp": "<REPLACE_ME>",
+      "mapEmbedUrl": "<REPLACE_ME_URL>"
     },
     "booking": {
       "mode": "whatsapp",

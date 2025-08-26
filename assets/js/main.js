@@ -11,6 +11,14 @@ const texts = {
     heroRoomsBtn: 'Ver habitaciones',
     heroReserveBtn: 'Reservar',
     bookingCta: 'Reservar ahora',
+    contact: {
+      phone: 'Teléfono',
+      whatsapp: 'WhatsApp',
+      email: 'Email',
+      address: 'Dirección',
+      openMap: 'Abrir mapa',
+      directions: 'Cómo llegar'
+    },
     seo: {
       metaTitle: 'Hotel Paraíso',
       metaDescription: 'Descubre el mejor alojamiento.'
@@ -20,6 +28,14 @@ const texts = {
     heroRoomsBtn: 'View rooms',
     heroReserveBtn: 'Book',
     bookingCta: 'Book now',
+    contact: {
+      phone: 'Phone',
+      whatsapp: 'WhatsApp',
+      email: 'Email',
+      address: 'Address',
+      openMap: 'Open map',
+      directions: 'Directions'
+    },
     seo: {
       metaTitle: 'Paradise Hotel',
       metaDescription: 'Discover the best accommodation.'
@@ -306,6 +322,93 @@ function renderGallery() {
   section.appendChild(container);
 }
 
+function renderLocation(lang) {
+  const section = document.getElementById('location');
+  if (!section || !config.contact) return;
+  section.innerHTML = '';
+  const container = document.createElement('div');
+  container.className = 'container';
+
+  const labels = (texts[lang] && texts[lang].contact) || {};
+  const list = document.createElement('ul');
+  list.className = 'contact-list';
+
+  if (config.contact.phone) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `tel:${config.contact.phone}`;
+    a.textContent = `${labels.phone || 'Teléfono'}: ${config.contact.phone}`;
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+  if (config.contact.whatsapp) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `https://wa.me/${config.contact.whatsapp}`;
+    a.textContent = `${labels.whatsapp || 'WhatsApp'}: ${config.contact.whatsapp}`;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+  if (config.contact.email) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `mailto:${config.contact.email}`;
+    a.textContent = `${labels.email || 'Email'}: ${config.contact.email}`;
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+  if (config.contact.address) {
+    const li = document.createElement('li');
+    const encoded = encodeURIComponent(config.contact.address);
+    const a = document.createElement('a');
+    a.href = `https://www.google.com/maps?q=${encoded}`;
+    a.textContent = `${labels.address || 'Dirección'}: ${config.contact.address}`;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    li.appendChild(a);
+    list.appendChild(li);
+  }
+
+  container.appendChild(list);
+
+  if (config.contact.mapEmbedUrl) {
+    const iframe = document.createElement('iframe');
+    iframe.src = config.contact.mapEmbedUrl;
+    iframe.width = '100%';
+    iframe.height = '300';
+    iframe.style.border = '0';
+    iframe.setAttribute('loading', 'lazy');
+    iframe.setAttribute('title', 'Mapa');
+    container.appendChild(iframe);
+  } else if (config.contact.address) {
+    const mapLink = document.createElement('a');
+    mapLink.href = `https://www.google.com/maps?q=${encodeURIComponent(
+      config.contact.address
+    )}`;
+    mapLink.textContent = labels.openMap || 'Abrir mapa';
+    mapLink.className = 'btn btn-secondary';
+    mapLink.target = '_blank';
+    mapLink.rel = 'noopener';
+    container.appendChild(mapLink);
+  }
+
+  if (config.contact.address) {
+    const dirBtn = document.createElement('a');
+    dirBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+      config.contact.address
+    )}`;
+    dirBtn.textContent = labels.directions || 'Cómo llegar';
+    dirBtn.className = 'btn btn-primary';
+    dirBtn.target = '_blank';
+    dirBtn.rel = 'noopener';
+    container.appendChild(dirBtn);
+  }
+
+  section.appendChild(container);
+}
+
 function handleGalleryKeys(e) {
   const modal = document.getElementById('gallery-modal');
   if (!modal || !modal.classList.contains('active')) return;
@@ -332,6 +435,7 @@ function renderUI(lang) {
   renderRooms(lang);
   renderAmenities(lang);
   renderGallery();
+  renderLocation(lang);
 }
 
 function setLanguage(lang) {
