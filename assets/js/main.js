@@ -409,6 +409,32 @@ function renderLocation(lang) {
   section.appendChild(container);
 }
 
+function renderFooter(lang) {
+  const labels = (texts[lang] && texts[lang].contact) || {};
+  const phoneLink = document.getElementById('footer-phone');
+  const emailLink = document.getElementById('footer-email');
+  const yearEl = document.getElementById('year');
+  const siteNameEl = document.getElementById('site-name');
+
+  if (phoneLink && config.contact && config.contact.phone) {
+    phoneLink.textContent = `${labels.phone || 'Teléfono'}: ${config.contact.phone}`;
+    phoneLink.href = `tel:${config.contact.phone}`;
+  }
+
+  if (emailLink && config.contact && config.contact.email) {
+    emailLink.textContent = config.contact.email;
+    emailLink.href = `mailto:${config.contact.email}`;
+  }
+
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
+
+  if (siteNameEl && config.site && config.site.name) {
+    siteNameEl.textContent = config.site.name;
+  }
+}
+
 function handleGalleryKeys(e) {
   const modal = document.getElementById('gallery-modal');
   if (!modal || !modal.classList.contains('active')) return;
@@ -436,6 +462,7 @@ function renderUI(lang) {
   renderAmenities(lang);
   renderGallery();
   renderLocation(lang);
+  renderFooter(lang);
 }
 
 function setLanguage(lang) {

@@ -329,3 +329,30 @@ select:focus {
   }
 }
 
+
+/* Footer */
+footer {
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-md);
+}
+
+.footer-links li + li {
+  margin-top: var(--spacing-sm);
+}
+
+.footer-links a {
+  color: var(--color-text-light);
+  text-decoration: underline;
+}
+
+footer p {
+  margin: 0;
+}
