@@ -117,6 +117,18 @@ select:focus {
   padding: var(--spacing-md);
 }
 
+.room-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.rooms-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: 1fr;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -228,6 +240,18 @@ select:focus {
 @media (min-width: 1280px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .rooms-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .rooms-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
