@@ -35,6 +35,12 @@ body {
   background-color: var(--color-bg);
 }
 
+.container {
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+}
+
 header {
   position: fixed;
   top: 0;
@@ -93,6 +99,11 @@ select:focus {
   color: var(--color-text-light);
 }
 
+.btn-secondary {
+  background-color: var(--color-accent);
+  color: var(--color-text-dark);
+}
+
 .grid {
   display: grid;
   gap: var(--spacing-md);
@@ -138,6 +149,52 @@ select:focus {
   background-color: var(--color-bg);
   padding: var(--spacing-lg);
   border-radius: 8px;
+}
+
+/* Hero section */
+#hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  color: var(--color-text-light);
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+#hero.hero-no-image {
+  background-color: var(--color-primary);
+}
+
+#hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-actions {
+  margin-top: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  #hero .container {
+    text-align: left;
+  }
+  .hero-actions {
+    justify-content: flex-start;
+  }
 }
 
 /* High contrast mode */

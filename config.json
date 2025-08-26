@@ -1,5 +1,10 @@
 {
   "site": {
+    "name": "Hotel Paraíso",
+    "tagline": {
+      "es": "Tu hogar lejos de casa",
+      "en": "Your home away from home"
+    },
     "title": "Hotel Paraíso",
     "description": "Tu hogar lejos de casa",
     "baseUrl": "https://hotelparaiso.example",

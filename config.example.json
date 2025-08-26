@@ -4,10 +4,13 @@
 */
 {
   "site": {
+    "name": "<REPLACE_ME>",
+    "tagline": { "es": "<REPLACE_ME>", "en": "<REPLACE_ME>" },
     "title": "<REPLACE_ME>",
     "description": "<REPLACE_ME>",
     "baseUrl": "<REPLACE_ME_URL>",
-    "defaultLang": "es"
+    "defaultLang": "es",
+    "heroImage": "<REPLACE_ME_URL>"
   },
   "colors": {
     "primary": "<REPLACE_ME_HEX>",
