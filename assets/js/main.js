@@ -102,6 +102,18 @@ function renderLogo() {
   }
 }
 
+function renderLanguageSwitcher() {
+  const selector = document.getElementById('langSwitcher');
+  if (!selector || !config.site || !Array.isArray(config.site.languages)) return;
+  selector.innerHTML = '';
+  config.site.languages.forEach((lang) => {
+    const option = document.createElement('option');
+    option.value = lang;
+    option.textContent = lang.toUpperCase();
+    selector.appendChild(option);
+  });
+}
+
 function renderNav(lang) {
   const list = document.getElementById('nav-items');
   if (!list || !config.nav || !Array.isArray(config.nav.items)) return;
@@ -411,6 +423,8 @@ function renderFooter(lang) {
   const labels = (texts[lang] && texts[lang].contact) || {};
   const phoneLink = document.getElementById('footer-phone');
   const emailLink = document.getElementById('footer-email');
+  const policiesList = document.getElementById('footer-policies');
+  const socialList = document.getElementById('footer-social');
   const yearEl = document.getElementById('year');
   const siteNameEl = document.getElementById('site-name');
 
@@ -422,6 +436,37 @@ function renderFooter(lang) {
   if (emailLink && config.contact && config.contact.email) {
     emailLink.textContent = config.contact.email;
     emailLink.href = `mailto:${config.contact.email}`;
+  }
+
+  if (policiesList) {
+    policiesList.innerHTML = '';
+    if (Array.isArray(config.policies)) {
+      config.policies.forEach((item) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        const label = (item.label && (item.label[lang] || item.label)) || '';
+        a.textContent = label;
+        a.href = item.url || '#';
+        li.appendChild(a);
+        policiesList.appendChild(li);
+      });
+    }
+  }
+
+  if (socialList) {
+    socialList.innerHTML = '';
+    if (Array.isArray(config.social)) {
+      config.social.forEach((item) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = item.url || '#';
+        a.textContent = item.platform || item.name || '';
+        a.target = '_blank';
+        a.rel = 'noopener';
+        li.appendChild(a);
+        socialList.appendChild(li);
+      });
+    }
   }
 
   if (yearEl) {
@@ -565,8 +610,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
   renderLogo();
   setColors();
+  renderLanguageSwitcher();
   const stored = localStorage.getItem('lang');
-  const defaultLang = (config.site && config.site.defaultLang) || 'es';
+  const defaultLang = (config.site && config.site.defaultLang) || (config.site && config.site.languages && config.site.languages[0]) || 'es';
   setLanguage(stored || defaultLang);
   const selector = document.getElementById('langSwitcher');
   if (selector) {
