@@ -57,14 +57,46 @@ function applySEO(lang) {
   }
 }
 
+function renderLogo() {
+  const logoEl = document.getElementById('logo');
+  if (!logoEl) return;
+  logoEl.innerHTML = '';
+  if (config.site && config.site.logo) {
+    const img = document.createElement('img');
+    img.src = config.site.logo;
+    img.alt = (config.site && config.site.title) || 'Logo';
+    logoEl.appendChild(img);
+  } else {
+    const span = document.createElement('span');
+    span.className = 'logo-text';
+    span.textContent = (config.site && config.site.title) || '';
+    logoEl.appendChild(span);
+  }
+}
+
+function renderNav(lang) {
+  const list = document.getElementById('nav-items');
+  if (!list || !config.nav || !Array.isArray(config.nav.items)) return;
+  list.innerHTML = '';
+  config.nav.items.forEach((item) => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${item.section}`;
+    const label = (item.label && (item.label[lang] || item.label)) || '';
+    a.textContent = label;
+    a.setAttribute('tabindex', '0');
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+}
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
-  const headerEl = document.getElementById('header-title');
   const heroEl = document.getElementById('hero-title');
   const bookingBtn = document.getElementById('booking-cta');
-  if (headerEl) headerEl.textContent = dict.headerTitle || '';
   if (heroEl) heroEl.textContent = dict.heroTitle || '';
   if (bookingBtn) bookingBtn.textContent = dict.bookingCta || '';
+  renderNav(lang);
 }
 
 function setLanguage(lang) {
@@ -72,7 +104,7 @@ function setLanguage(lang) {
   renderUI(lang);
   applySEO(lang);
   localStorage.setItem('lang', lang);
-  const selector = document.getElementById('language-selector');
+  const selector = document.getElementById('langSwitcher');
   if (selector && selector.value !== lang) {
     selector.value = lang;
   }
@@ -80,12 +112,20 @@ function setLanguage(lang) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
+  renderLogo();
   setColors();
   const stored = localStorage.getItem('lang');
   const defaultLang = (config.site && config.site.defaultLang) || 'es';
   setLanguage(stored || defaultLang);
-  const selector = document.getElementById('language-selector');
+  const selector = document.getElementById('langSwitcher');
   if (selector) {
     selector.addEventListener('change', (e) => setLanguage(e.target.value));
+  }
+  const reserveBtn = document.getElementById('reserve-btn');
+  if (reserveBtn) {
+    reserveBtn.addEventListener('click', () => {
+      const widget = document.getElementById('booking');
+      if (widget) widget.scrollIntoView({ behavior: 'smooth' });
+    });
   }
 });
