@@ -27,7 +27,9 @@
     "booking": {
       "mode": "whatsapp",
       "externalUrl": "<REPLACE_ME_URL>",
-      "currency": "<REPLACE_ME_CURRENCY>"
+      "currency": "<REPLACE_ME_CURRENCY>",
+      "checkinTime": "<REPLACE_ME>",
+      "checkoutTime": "<REPLACE_ME>"
     },
   "branding": {
     "logoUrl": "<REPLACE_ME_URL>",
