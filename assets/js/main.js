@@ -156,7 +156,7 @@ function renderRooms(lang) {
   const container = document.createElement('div');
   container.className = 'container';
   const grid = document.createElement('div');
-  grid.className = 'rooms-grid';
+  grid.className = 'grid rooms-grid';
   container.appendChild(grid);
   config.rooms.forEach((room) => {
     const article = document.createElement('article');
@@ -201,6 +201,47 @@ function renderRooms(lang) {
   section.appendChild(container);
 }
 
+function renderAmenities(lang) {
+  const section = document.getElementById('amenities');
+  if (!section) return;
+  if (!config.amenities || !Array.isArray(config.amenities) || config.amenities.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = '';
+  section.innerHTML = '';
+  const container = document.createElement('div');
+  container.className = 'container';
+  const grid = document.createElement('div');
+  grid.className = 'grid amenities-grid';
+  container.appendChild(grid);
+  config.amenities.forEach((amenity) => {
+    const item = document.createElement('div');
+    item.className = 'card amenity-item';
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'amenity-icon';
+    if (amenity.icon) {
+      const isSvg = amenity.icon.trim().startsWith('<svg');
+      if (isSvg) {
+        iconSpan.innerHTML = amenity.icon;
+        iconSpan.setAttribute('role', 'img');
+        const label =
+          (amenity.label && (amenity.label[lang] || amenity.label)) || '';
+        iconSpan.setAttribute('aria-label', label);
+      } else {
+        iconSpan.textContent = amenity.icon;
+      }
+    }
+    item.appendChild(iconSpan);
+    const labelSpan = document.createElement('span');
+    labelSpan.textContent =
+      (amenity.label && (amenity.label[lang] || amenity.label)) || '';
+    item.appendChild(labelSpan);
+    grid.appendChild(item);
+  });
+  section.appendChild(container);
+}
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
@@ -208,6 +249,7 @@ function renderUI(lang) {
   renderNav(lang);
   renderHero(lang);
   renderRooms(lang);
+  renderAmenities(lang);
 }
 
 function setLanguage(lang) {

@@ -123,10 +123,15 @@ select:focus {
   border-radius: 4px;
 }
 
-.rooms-grid {
-  display: grid;
-  gap: var(--spacing-md);
-  grid-template-columns: 1fr;
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.amenity-icon {
+  font-size: 1.5rem;
 }
 
 .sr-only {
@@ -247,10 +252,16 @@ select:focus {
   .rooms-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (min-width: 1024px) {
   .rooms-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .amenities-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
