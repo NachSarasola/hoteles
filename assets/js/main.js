@@ -80,8 +80,41 @@ function applySEO(lang) {
   document.getElementById('meta-description').setAttribute('content', metaDescription);
   document.getElementById('og-title').setAttribute('content', metaTitle);
   document.getElementById('og-description').setAttribute('content', metaDescription);
+  const baseUrl = (config.site && config.site.baseUrl) || '';
+  document.getElementById('og-url').setAttribute('content', baseUrl);
+  document.getElementById('twitter-url').setAttribute('content', baseUrl);
+  document.getElementById('twitter-title').setAttribute('content', metaTitle);
+  document.getElementById('twitter-description').setAttribute('content', metaDescription);
+  document.getElementById('og-type').setAttribute('content', 'website');
+  document.getElementById('twitter-card').setAttribute('content', 'summary_large_image');
   if (config.seo && config.seo.metaImageUrl) {
     document.getElementById('og-image').setAttribute('content', config.seo.metaImageUrl);
+    document.getElementById('twitter-image').setAttribute('content', config.seo.metaImageUrl);
+  }
+}
+
+function insertHotelSchema() {
+  if (!config.site || !config.contact) return;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Hotel',
+    name: config.site.name || '',
+    url: config.site.baseUrl || '',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: (config.contact && config.contact.address) || ''
+    },
+    telephone: (config.contact && config.contact.phone) || ''
+  };
+  if (config.booking && config.booking.checkinTime) {
+    schema.checkinTime = config.booking.checkinTime;
+  }
+  if (config.booking && config.booking.checkoutTime) {
+    schema.checkoutTime = config.booking.checkoutTime;
+  }
+  const el = document.getElementById('hotel-schema');
+  if (el) {
+    el.textContent = JSON.stringify(schema);
   }
 }
 
@@ -611,6 +644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderLogo();
   setColors();
   renderLanguageSwitcher();
+  insertHotelSchema();
   const stored = localStorage.getItem('lang');
   const defaultLang = (config.site && config.site.defaultLang) || (config.site && config.site.languages && config.site.languages[0]) || 'es';
   setLanguage(stored || defaultLang);

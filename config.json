@@ -34,7 +34,9 @@
   "booking": {
     "mode": "whatsapp",
     "externalUrl": "https://booking.example",
-    "currency": "USD"
+    "currency": "USD",
+    "checkinTime": "15:00",
+    "checkoutTime": "11:00"
   },
   "nav": {
     "items": [
