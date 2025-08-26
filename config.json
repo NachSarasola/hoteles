@@ -3,7 +3,8 @@
     "title": "Hotel Paraíso",
     "description": "Tu hogar lejos de casa",
     "baseUrl": "https://hotelparaiso.example",
-    "defaultLang": "es"
+    "defaultLang": "es",
+    "logo": "assets/img/logo.svg"
   },
   "colors": {
     "primary": "#005f73",
@@ -13,5 +14,14 @@
     "metaTitle": "Hotel Paraíso",
     "metaDescription": "Descubre el mejor alojamiento.",
     "metaImageUrl": "assets/img/og-image.png"
+  },
+  "nav": {
+    "items": [
+      { "section": "hero", "label": { "es": "Inicio", "en": "Home" } },
+      { "section": "rooms", "label": { "es": "Habitaciones", "en": "Rooms" } },
+      { "section": "amenities", "label": { "es": "Servicios", "en": "Amenities" } },
+      { "section": "gallery", "label": { "es": "Galería", "en": "Gallery" } },
+      { "section": "location", "label": { "es": "Ubicación", "en": "Location" } }
+    ]
   }
 }
