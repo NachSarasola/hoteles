@@ -6,8 +6,8 @@ let currentLang = 'es';
 
 const texts = {
   es: {
-    headerTitle: 'Bienvenido a Hoteles',
-    heroTitle: 'Disfruta tu estadía',
+    heroRoomsBtn: 'Ver habitaciones',
+    heroReserveBtn: 'Reservar',
     bookingCta: 'Reservar ahora',
     seo: {
       metaTitle: 'Hotel Paraíso',
@@ -15,8 +15,8 @@ const texts = {
     }
   },
   en: {
-    headerTitle: 'Welcome to Hotels',
-    heroTitle: 'Enjoy your stay',
+    heroRoomsBtn: 'View rooms',
+    heroReserveBtn: 'Book',
     bookingCta: 'Book now',
     seo: {
       metaTitle: 'Paradise Hotel',
@@ -90,13 +90,38 @@ function renderNav(lang) {
   });
 }
 
+function renderHero(lang) {
+  const heroSection = document.getElementById('hero');
+  if (!heroSection) return;
+  const heading = document.getElementById('hero-heading');
+  const tagline = document.getElementById('hero-tagline');
+  const roomsBtn = document.getElementById('hero-rooms-btn');
+  const reserveBtn = document.getElementById('hero-reserve-btn');
+  const name = (config.site && (config.site.name || config.site.title)) || '';
+  const tag =
+    (config.site &&
+      config.site.tagline &&
+      (config.site.tagline[lang] || config.site.tagline)) || '';
+  if (heading) heading.textContent = name;
+  if (tagline) tagline.textContent = tag;
+  const dict = texts[lang] || {};
+  if (roomsBtn) roomsBtn.textContent = dict.heroRoomsBtn || 'Ver habitaciones';
+  if (reserveBtn) reserveBtn.textContent = dict.heroReserveBtn || 'Reservar';
+  if (config.site && config.site.heroImage) {
+    heroSection.style.backgroundImage = `url(${config.site.heroImage})`;
+    heroSection.classList.remove('hero-no-image');
+  } else {
+    heroSection.style.backgroundImage = '';
+    heroSection.classList.add('hero-no-image');
+  }
+}
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
-  const heroEl = document.getElementById('hero-title');
   const bookingBtn = document.getElementById('booking-cta');
-  if (heroEl) heroEl.textContent = dict.heroTitle || '';
   if (bookingBtn) bookingBtn.textContent = dict.bookingCta || '';
   renderNav(lang);
+  renderHero(lang);
 }
 
 function setLanguage(lang) {
