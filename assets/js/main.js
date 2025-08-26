@@ -116,12 +116,98 @@ function renderHero(lang) {
   }
 }
 
+function openRoomModal(room, lang) {
+  let modal = document.getElementById('room-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'room-modal';
+    modal.className = 'modal';
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = '';
+  const content = document.createElement('div');
+  content.className = 'modal-content';
+  const close = document.createElement('button');
+  close.className = 'btn btn-secondary';
+  close.textContent = 'Cerrar';
+  close.addEventListener('click', () => modal.classList.remove('active'));
+  const details =
+    typeof room.details === 'object' ? room.details[lang] || room.details : room.details;
+  const detailsWrap = document.createElement('div');
+  detailsWrap.innerHTML = details || '';
+  content.appendChild(detailsWrap);
+  content.appendChild(close);
+  modal.appendChild(content);
+  modal.classList.add('active');
+}
+
+function renderRooms(lang) {
+  const section = document.getElementById('rooms');
+  if (!section) return;
+  if (!config.rooms || !Array.isArray(config.rooms) || config.rooms.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = '';
+  section.innerHTML = '';
+  const container = document.createElement('div');
+  container.className = 'container';
+  const grid = document.createElement('div');
+  grid.className = 'rooms-grid';
+  container.appendChild(grid);
+  config.rooms.forEach((room) => {
+    const article = document.createElement('article');
+    article.className = 'card room-card';
+    if (room.image) {
+      const img = document.createElement('img');
+      img.src = room.image;
+      img.alt =
+        (typeof room.name === 'object' ? room.name[lang] || room.name : room.name) || '';
+      article.appendChild(img);
+    }
+    const title = document.createElement('h3');
+    title.textContent =
+      (typeof room.name === 'object' ? room.name[lang] || room.name : room.name) || '';
+    article.appendChild(title);
+    if (room.description) {
+      const desc = document.createElement('p');
+      desc.textContent =
+        typeof room.description === 'object'
+          ? room.description[lang] || room.description
+          : room.description;
+      article.appendChild(desc);
+    }
+    if (typeof room.price !== 'undefined' && config.booking && config.booking.currency) {
+      const priceEl = document.createElement('p');
+      const fmt = new Intl.NumberFormat(lang, {
+        style: 'currency',
+        currency: config.booking.currency
+      });
+      priceEl.textContent = `Desde ${fmt.format(room.price)}`;
+      article.appendChild(priceEl);
+    }
+    if (room.details) {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-secondary';
+      btn.textContent = 'Más info';
+      btn.addEventListener('click', () => openRoomModal(room, lang));
+      article.appendChild(btn);
+    }
+    grid.appendChild(article);
+  });
+  section.appendChild(container);
+}
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
   if (bookingBtn) bookingBtn.textContent = dict.bookingCta || '';
   renderNav(lang);
   renderHero(lang);
+  renderRooms(lang);
 }
 
 function setLanguage(lang) {

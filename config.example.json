@@ -24,7 +24,8 @@
     },
     "booking": {
       "mode": "whatsapp",
-      "externalUrl": "<REPLACE_ME_URL>"
+      "externalUrl": "<REPLACE_ME_URL>",
+      "currency": "<REPLACE_ME_CURRENCY>"
     },
   "branding": {
     "logoUrl": "<REPLACE_ME_URL>",
@@ -37,8 +38,10 @@
   "rooms": [
     {
       "name": "<REPLACE_ME>",
-      "imageUrl": "<REPLACE_ME_URL>",
-      "description": "<REPLACE_ME>"
+      "image": "<REPLACE_ME_URL>",
+      "description": "<REPLACE_ME>",
+      "price": 0,
+      "details": "<REPLACE_ME>"
     }
   ],
   "amenities": [

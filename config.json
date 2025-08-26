@@ -25,7 +25,8 @@
   },
   "booking": {
     "mode": "whatsapp",
-    "externalUrl": "https://booking.example"
+    "externalUrl": "https://booking.example",
+    "currency": "USD"
   },
   "nav": {
     "items": [
@@ -35,5 +36,35 @@
       { "section": "gallery", "label": { "es": "Galería", "en": "Gallery" } },
       { "section": "location", "label": { "es": "Ubicación", "en": "Location" } }
     ]
-  }
+  },
+  "rooms": [
+    {
+      "name": {
+        "es": "Suite Deluxe",
+        "en": "Deluxe Suite"
+      },
+      "image": "https://via.placeholder.com/400x300",
+      "description": {
+        "es": "Suite con vista al mar",
+        "en": "Suite with sea view"
+      },
+      "price": 150,
+      "details": {
+        "es": "<p>Amplia suite con balcón privado y <strong>wifi</strong>.</p>",
+        "en": "<p>Spacious suite with private balcony and <strong>wifi</strong>.</p>"
+      }
+    },
+    {
+      "name": {
+        "es": "Habitación Estándar",
+        "en": "Standard Room"
+      },
+      "image": "https://via.placeholder.com/400x300",
+      "description": {
+        "es": "Habitación confortable",
+        "en": "Comfortable room"
+      },
+      "price": 90
+    }
+  ]
 }
