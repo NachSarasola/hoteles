@@ -61,6 +61,16 @@ function setColors() {
   });
 }
 
+function toggleSection(id, condition) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (condition) {
+    el.classList.remove('hidden');
+  } else {
+    el.classList.add('hidden');
+  }
+}
+
 function applySEO(lang) {
   const langSeo = (texts[lang] && texts[lang].seo) || {};
   const metaTitle = langSeo.metaTitle || (config.seo && config.seo.metaTitle) || '';
@@ -164,12 +174,8 @@ function openRoomModal(room, lang) {
 
 function renderRooms(lang) {
   const section = document.getElementById('rooms');
-  if (!section) return;
-  if (!config.rooms || !Array.isArray(config.rooms) || config.rooms.length === 0) {
-    section.style.display = 'none';
-    return;
-  }
-  section.style.display = '';
+  const hasRooms = Array.isArray(config.rooms) && config.rooms.length > 0;
+  if (!section || !hasRooms) return;
   section.innerHTML = '';
   const container = document.createElement('div');
   container.className = 'container';
@@ -221,12 +227,8 @@ function renderRooms(lang) {
 
 function renderAmenities(lang) {
   const section = document.getElementById('amenities');
-  if (!section) return;
-  if (!config.amenities || !Array.isArray(config.amenities) || config.amenities.length === 0) {
-    section.style.display = 'none';
-    return;
-  }
-  section.style.display = '';
+  const hasAmenities = Array.isArray(config.amenities) && config.amenities.length > 0;
+  if (!section || !hasAmenities) return;
   section.innerHTML = '';
   const container = document.createElement('div');
   container.className = 'container';
@@ -298,12 +300,8 @@ function openGalleryModal(index) {
 
 function renderGallery() {
   const section = document.getElementById('gallery');
-  if (!section) return;
-  if (!config.gallery || !Array.isArray(config.gallery) || config.gallery.length === 0) {
-    section.style.display = 'none';
-    return;
-  }
-  section.style.display = '';
+  const hasGallery = Array.isArray(config.gallery) && config.gallery.length > 0;
+  if (!section || !hasGallery) return;
   section.innerHTML = '';
   galleryImages = config.gallery.slice();
   const container = document.createElement('div');
@@ -456,6 +454,20 @@ function renderUI(lang) {
   const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
   if (bookingBtn) bookingBtn.textContent = dict.bookingCta || '';
+  toggleSection('rooms', Array.isArray(config.rooms) && config.rooms.length > 0);
+  toggleSection(
+    'amenities',
+    Array.isArray(config.amenities) && config.amenities.length > 0
+  );
+  toggleSection('gallery', Array.isArray(config.gallery) && config.gallery.length > 0);
+  toggleSection(
+    'testimonials',
+    Array.isArray(config.testimonials) && config.testimonials.length > 0
+  );
+  toggleSection(
+    'map',
+    !!(config.contact && (config.contact.mapEmbedUrl || config.contact.address))
+  );
   renderNav(lang);
   renderHero(lang);
   renderRooms(lang);

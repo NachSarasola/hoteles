@@ -155,6 +155,10 @@ select:focus {
   border: 0;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .modal {
   position: fixed;
   top: 0;
