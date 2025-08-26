@@ -61,6 +61,55 @@ function setColors() {
   });
 }
 
+function parseColor(value) {
+  const v = value.trim();
+  if (v.startsWith('#')) return v;
+  const rgb = v.match(/\d+/g);
+  if (!rgb) return '#000000';
+  return (
+    '#' +
+    rgb
+      .slice(0, 3)
+      .map((n) => parseInt(n, 10).toString(16).padStart(2, '0'))
+      .join('')
+  );
+}
+
+function relativeLuminance(hex) {
+  const c = hex.replace('#', '');
+  const rgb = [0, 1, 2]
+    .map((i) => parseInt(c.substr(i * 2, 2), 16) / 255)
+    .map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function contrastRatio(a, b) {
+  const L1 = relativeLuminance(a);
+  const L2 = relativeLuminance(b);
+  return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+}
+
+function enforceContrast() {
+  const styles = getComputedStyle(document.documentElement);
+  const primary = parseColor(styles.getPropertyValue('--color-primary'));
+  const accent = parseColor(styles.getPropertyValue('--color-accent'));
+  const textDark = parseColor(styles.getPropertyValue('--color-text-dark'));
+  const textLight = parseColor(styles.getPropertyValue('--color-text-light'));
+  const bg = parseColor(styles.getPropertyValue('--color-bg'));
+
+  const pairs = [
+    [primary, textLight],
+    [primary, textDark],
+    [accent, textDark],
+    [bg, textDark]
+  ];
+
+  const fails = pairs.some(([c1, c2]) => contrastRatio(c1, c2) < 4.5);
+  if (fails) {
+    document.documentElement.classList.add('high-contrast');
+  }
+}
+
 function toggleSection(id, condition) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -643,6 +692,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
   renderLogo();
   setColors();
+  enforceContrast();
   renderLanguageSwitcher();
   insertHotelSchema();
   const stored = localStorage.getItem('lang');
