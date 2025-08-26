@@ -1,0 +1,8 @@
+/*
+  Purpose: Example configuration for the hoteles project.
+  Author: ChatGPT
+*/
+{
+  "apiUrl": "https://example.com/api",
+  "port": 3000
+}
