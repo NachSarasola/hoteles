@@ -3,6 +3,54 @@
   Author: ChatGPT
 */
 {
-  "apiUrl": "https://example.com/api",
-  "port": 3000
+  "site": {
+    "title": "<REPLACE_ME>",
+    "description": "<REPLACE_ME>",
+    "baseUrl": "<REPLACE_ME_URL>"
+  },
+  "contact": {
+    "email": "<REPLACE_ME>",
+    "phone": "<REPLACE_ME>",
+    "address": "<REPLACE_ME>"
+  },
+  "booking": {
+    "ctaText": "<REPLACE_ME>",
+    "ctaUrl": "<REPLACE_ME_URL>"
+  },
+  "branding": {
+    "logoUrl": "<REPLACE_ME_URL>",
+    "faviconUrl": "<REPLACE_ME_URL>"
+  },
+  "nav": [
+    { "label": "<REPLACE_ME>", "href": "<REPLACE_ME_URL>" },
+    { "label": "<REPLACE_ME>", "href": "<REPLACE_ME_URL>" }
+  ],
+  "rooms": [
+    {
+      "name": "<REPLACE_ME>",
+      "imageUrl": "<REPLACE_ME_URL>",
+      "description": "<REPLACE_ME>"
+    }
+  ],
+  "amenities": [
+    {
+      "iconUrl": "<REPLACE_ME_URL>",
+      "label": "<REPLACE_ME>"
+    }
+  ],
+  "gallery": [
+    "<REPLACE_ME_URL>"
+  ],
+  "testimonials": [
+    {
+      "author": "<REPLACE_ME>",
+      "quote": "<REPLACE_ME>",
+      "avatarUrl": "<REPLACE_ME_URL>"
+    }
+  ],
+  "seo": {
+    "metaTitle": "<REPLACE_ME>",
+    "metaDescription": "<REPLACE_ME>",
+    "metaImageUrl": "<REPLACE_ME_URL>"
+  }
 }
