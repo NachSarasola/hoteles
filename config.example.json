@@ -6,7 +6,12 @@
   "site": {
     "title": "<REPLACE_ME>",
     "description": "<REPLACE_ME>",
-    "baseUrl": "<REPLACE_ME_URL>"
+    "baseUrl": "<REPLACE_ME_URL>",
+    "defaultLang": "es"
+  },
+  "colors": {
+    "primary": "<REPLACE_ME_HEX>",
+    "secondary": "<REPLACE_ME_HEX>"
   },
   "contact": {
     "email": "<REPLACE_ME>",

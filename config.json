@@ -1,0 +1,17 @@
+{
+  "site": {
+    "title": "Hotel Paraíso",
+    "description": "Tu hogar lejos de casa",
+    "baseUrl": "https://hotelparaiso.example",
+    "defaultLang": "es"
+  },
+  "colors": {
+    "primary": "#005f73",
+    "secondary": "#0a9396"
+  },
+  "seo": {
+    "metaTitle": "Hotel Paraíso",
+    "metaDescription": "Descubre el mejor alojamiento.",
+    "metaImageUrl": "assets/img/og-image.png"
+  }
+}
