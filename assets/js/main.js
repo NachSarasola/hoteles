@@ -135,6 +135,79 @@ function setLanguage(lang) {
   }
 }
 
+function setupBookingForm() {
+  const form = document.getElementById('booking-form');
+  if (!form) return;
+  const checkin = document.getElementById('checkin');
+  const checkout = document.getElementById('checkout');
+  const guests = document.getElementById('guests');
+  const errors = {
+    checkin: document.getElementById('checkin-error'),
+    checkout: document.getElementById('checkout-error'),
+    guests: document.getElementById('guests-error')
+  };
+
+  function clearErrors() {
+    Object.values(errors).forEach((el) => {
+      if (el) el.textContent = '';
+    });
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+    let valid = true;
+    const ci = checkin.value;
+    const co = checkout.value;
+    const g = parseInt(guests.value, 10);
+
+    if (!ci) {
+      if (errors.checkin) errors.checkin.textContent = 'Requerido';
+      checkin.focus();
+      valid = false;
+    }
+    if (!co) {
+      if (errors.checkout) errors.checkout.textContent = 'Requerido';
+      if (valid) checkout.focus();
+      valid = false;
+    }
+    if (ci && co) {
+      const ciDate = new Date(ci);
+      const coDate = new Date(co);
+      if (coDate <= ciDate) {
+        if (errors.checkout) errors.checkout.textContent = 'Debe ser posterior al check-in';
+        if (valid) checkout.focus();
+        valid = false;
+      }
+    }
+    if (!guests.value || g < 1) {
+      if (errors.guests) errors.guests.textContent = 'Debe ser al menos 1';
+      if (valid) guests.focus();
+      valid = false;
+    }
+    if (!valid) return;
+
+    if (config.booking && config.booking.mode === 'whatsapp' && config.contact && config.contact.whatsapp) {
+      const msg = encodeURIComponent(`Reserva del ${ci} al ${co} para ${g} huésped${g > 1 ? 'es' : ''}`);
+      const url = `https://wa.me/${config.contact.whatsapp}?text=${msg}`;
+      window.open(url, '_blank');
+    } else if (config.booking && config.booking.mode === 'external' && config.booking.externalUrl) {
+      const url = `${config.booking.externalUrl}?checkin=${ci}&checkout=${co}&guests=${g}`;
+      window.location.href = url;
+    }
+
+    form.reset();
+    checkin.focus();
+  });
+
+  [checkin, checkout, guests].forEach((input) =>
+    input.addEventListener('input', () => {
+      const err = errors[input.id];
+      if (err) err.textContent = '';
+    })
+  );
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
   renderLogo();
@@ -153,4 +226,5 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (widget) widget.scrollIntoView({ behavior: 'smooth' });
     });
   }
+  setupBookingForm();
 });

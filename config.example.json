@@ -16,15 +16,16 @@
     "primary": "<REPLACE_ME_HEX>",
     "secondary": "<REPLACE_ME_HEX>"
   },
-  "contact": {
-    "email": "<REPLACE_ME>",
-    "phone": "<REPLACE_ME>",
-    "address": "<REPLACE_ME>"
-  },
-  "booking": {
-    "ctaText": "<REPLACE_ME>",
-    "ctaUrl": "<REPLACE_ME_URL>"
-  },
+    "contact": {
+      "email": "<REPLACE_ME>",
+      "phone": "<REPLACE_ME>",
+      "address": "<REPLACE_ME>",
+      "whatsapp": "<REPLACE_ME>"
+    },
+    "booking": {
+      "mode": "whatsapp",
+      "externalUrl": "<REPLACE_ME_URL>"
+    },
   "branding": {
     "logoUrl": "<REPLACE_ME_URL>",
     "faviconUrl": "<REPLACE_ME_URL>"
