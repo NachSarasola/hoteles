@@ -9,7 +9,11 @@
     "description": "Tu hogar lejos de casa",
     "baseUrl": "https://hotelparaiso.example",
     "defaultLang": "es",
-    "logo": "assets/img/logo.svg"
+    "logo": "assets/img/logo.svg",
+    "languages": [
+      "es",
+      "en"
+    ]
   },
   "colors": {
     "primary": "#005f73",
@@ -34,11 +38,41 @@
   },
   "nav": {
     "items": [
-      { "section": "hero", "label": { "es": "Inicio", "en": "Home" } },
-      { "section": "rooms", "label": { "es": "Habitaciones", "en": "Rooms" } },
-      { "section": "amenities", "label": { "es": "Servicios", "en": "Amenities" } },
-      { "section": "gallery", "label": { "es": "Galería", "en": "Gallery" } },
-      { "section": "location", "label": { "es": "Ubicación", "en": "Location" } }
+      {
+        "section": "hero",
+        "label": {
+          "es": "Inicio",
+          "en": "Home"
+        }
+      },
+      {
+        "section": "rooms",
+        "label": {
+          "es": "Habitaciones",
+          "en": "Rooms"
+        }
+      },
+      {
+        "section": "amenities",
+        "label": {
+          "es": "Servicios",
+          "en": "Amenities"
+        }
+      },
+      {
+        "section": "gallery",
+        "label": {
+          "es": "Galería",
+          "en": "Gallery"
+        }
+      },
+      {
+        "section": "location",
+        "label": {
+          "es": "Ubicación",
+          "en": "Location"
+        }
+      }
     ]
   },
   "rooms": [
@@ -69,6 +103,21 @@
         "en": "Comfortable room"
       },
       "price": 90
+    }
+  ],
+  "policies": [
+    {
+      "label": {
+        "es": "<REPLACE_ME>",
+        "en": "<REPLACE_ME>"
+      },
+      "url": "<REPLACE_ME_URL>"
+    }
+  ],
+  "social": [
+    {
+      "platform": "<REPLACE_ME>",
+      "url": "<REPLACE_ME_URL>"
     }
   ]
 }
