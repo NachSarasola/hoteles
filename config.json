@@ -20,6 +20,13 @@
     "metaDescription": "Descubre el mejor alojamiento.",
     "metaImageUrl": "assets/img/og-image.png"
   },
+  "contact": {
+    "whatsapp": "1234567890"
+  },
+  "booking": {
+    "mode": "whatsapp",
+    "externalUrl": "https://booking.example"
+  },
   "nav": {
     "items": [
       { "section": "hero", "label": { "es": "Inicio", "en": "Home" } },
