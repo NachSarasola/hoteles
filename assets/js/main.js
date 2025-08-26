@@ -3,6 +3,8 @@
 
 let config = {};
 let currentLang = 'es';
+let galleryImages = [];
+let currentGalleryIndex = 0;
 
 const texts = {
   es: {
@@ -242,6 +244,85 @@ function renderAmenities(lang) {
   section.appendChild(container);
 }
 
+function updateGalleryModalImage() {
+  const modal = document.getElementById('gallery-modal');
+  if (!modal) return;
+  const img = modal.querySelector('img');
+  if (img) img.src = galleryImages[currentGalleryIndex];
+}
+
+function closeGalleryModal() {
+  const modal = document.getElementById('gallery-modal');
+  if (modal) modal.classList.remove('active');
+}
+
+function openGalleryModal(index) {
+  currentGalleryIndex = index;
+  let modal = document.getElementById('gallery-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'gallery-modal';
+    modal.className = 'modal gallery-modal';
+    const img = document.createElement('img');
+    img.alt = '';
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', closeGalleryModal);
+    modal.appendChild(img);
+    modal.appendChild(closeBtn);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeGalleryModal();
+    });
+    document.body.appendChild(modal);
+  }
+  updateGalleryModalImage();
+  modal.classList.add('active');
+}
+
+function renderGallery() {
+  const section = document.getElementById('gallery');
+  if (!section) return;
+  if (!config.gallery || !Array.isArray(config.gallery) || config.gallery.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = '';
+  section.innerHTML = '';
+  galleryImages = config.gallery.slice();
+  const container = document.createElement('div');
+  container.className = 'container';
+  const grid = document.createElement('div');
+  grid.className = 'grid gallery-grid';
+  container.appendChild(grid);
+  galleryImages.forEach((url, idx) => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.loading = 'lazy';
+    img.alt = `Imagen ${idx + 1}`;
+    img.addEventListener('click', () => openGalleryModal(idx));
+    grid.appendChild(img);
+  });
+  section.appendChild(container);
+}
+
+function handleGalleryKeys(e) {
+  const modal = document.getElementById('gallery-modal');
+  if (!modal || !modal.classList.contains('active')) return;
+  if (e.key === 'Escape') {
+    closeGalleryModal();
+  } else if (e.key === 'ArrowRight' && galleryImages.length > 1) {
+    currentGalleryIndex = (currentGalleryIndex + 1) % galleryImages.length;
+    updateGalleryModalImage();
+  } else if (e.key === 'ArrowLeft' && galleryImages.length > 1) {
+    currentGalleryIndex =
+      (currentGalleryIndex - 1 + galleryImages.length) % galleryImages.length;
+    updateGalleryModalImage();
+  }
+}
+
+document.addEventListener('keydown', handleGalleryKeys);
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
@@ -250,6 +331,7 @@ function renderUI(lang) {
   renderHero(lang);
   renderRooms(lang);
   renderAmenities(lang);
+  renderGallery();
 }
 
 function setLanguage(lang) {
