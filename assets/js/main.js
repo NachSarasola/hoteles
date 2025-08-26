@@ -206,7 +206,6 @@ function renderNav(lang) {
     a.href = `#${item.section}`;
     const label = (item.label && (item.label[lang] || item.label)) || '';
     a.textContent = label;
-    a.setAttribute('tabindex', '0');
     li.appendChild(a);
     list.appendChild(li);
   });
@@ -360,7 +359,10 @@ function updateGalleryModalImage() {
   const modal = document.getElementById('gallery-modal');
   if (!modal) return;
   const img = modal.querySelector('img');
-  if (img) img.src = galleryImages[currentGalleryIndex];
+  if (img) {
+    img.src = galleryImages[currentGalleryIndex];
+    img.alt = `Imagen ${currentGalleryIndex + 1}`;
+  }
 }
 
 function closeGalleryModal() {
@@ -376,10 +378,11 @@ function openGalleryModal(index) {
     modal.id = 'gallery-modal';
     modal.className = 'modal gallery-modal';
     const img = document.createElement('img');
-    img.alt = '';
+    img.alt = `Imagen ${index + 1}`;
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.innerHTML = '&times;';
+    closeBtn.setAttribute('aria-label', 'Cerrar galería');
     closeBtn.addEventListener('click', closeGalleryModal);
     modal.appendChild(img);
     modal.appendChild(closeBtn);
@@ -542,7 +545,16 @@ function renderFooter(lang) {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = item.url || '#';
-        a.textContent = item.platform || item.name || '';
+        const label = item.platform || item.name || '';
+        if (item.icon) {
+          a.innerHTML = item.icon;
+          if (label) a.setAttribute('aria-label', label);
+        } else {
+          a.textContent = label;
+        }
+        if (!label) {
+          a.setAttribute('aria-label', 'enlace');
+        }
         a.target = '_blank';
         a.rel = 'noopener';
         li.appendChild(a);
@@ -577,6 +589,31 @@ function handleGalleryKeys(e) {
 
 document.addEventListener('keydown', handleGalleryKeys);
 
+function ensureImageAlts() {
+  document.querySelectorAll('img').forEach((img) => {
+    if (!img.hasAttribute('alt') || img.getAttribute('alt').trim() === '') {
+      console.warn('Imagen sin atributo alt:', img);
+    }
+  });
+}
+
+function ensureAriaLabels() {
+  document.querySelectorAll('a, button').forEach((el) => {
+    const hasText = el.textContent.trim().length > 0;
+    const hasLabel =
+      el.hasAttribute('aria-label') || el.hasAttribute('aria-describedby');
+    if (!hasText && !hasLabel) {
+      if (el.title) {
+        el.setAttribute('aria-label', el.title);
+      } else if (el.dataset && el.dataset.label) {
+        el.setAttribute('aria-label', el.dataset.label);
+      } else {
+        console.warn('Elemento interactivo sin etiqueta accesible:', el);
+      }
+    }
+  });
+}
+
 function renderUI(lang) {
   const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
@@ -602,6 +639,8 @@ function renderUI(lang) {
   renderGallery();
   renderLocation(lang);
   renderFooter(lang);
+  ensureImageAlts();
+  ensureAriaLabels();
 }
 
 function setLanguage(lang) {
