@@ -8,6 +8,7 @@ const texts = {};
 let galleryImages = [];
 let currentGalleryIndex = 0;
 let lastFocusedElement = null;
+let themeToggle = null;
 
 async function loadConfig() {
   try {
@@ -107,6 +108,87 @@ function enforceContrast() {
   if (fails) {
     document.documentElement.classList.add('high-contrast');
   }
+}
+
+function getPreferredTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+}
+
+function loadThemeLink(href) {
+  let link = document.getElementById('theme-css');
+  if (!link) {
+    link = document.createElement('link');
+    link.id = 'theme-css';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+  }
+  link.href = href;
+}
+
+function loadTheme(theme) {
+  const base = '/assets/css';
+  const href = theme === 'dark' ? `${base}/theme-dark.css` : `${base}/theme-light.css`;
+  loadThemeLink(href);
+}
+
+function ensureToggleContrast(btn, theme) {
+  const styles = getComputedStyle(document.documentElement);
+  const primary = parseColor(styles.getPropertyValue('--color-primary'));
+  if (contrastRatio(primary, '#ffffff') < 4.5) {
+    if (theme === 'dark') {
+      btn.style.background = '#ffffff';
+      btn.style.color = '#111111';
+    } else {
+      btn.style.background = '#111111';
+      btn.style.color = '#ffffff';
+    }
+  } else {
+    btn.style.background = 'var(--color-primary)';
+    btn.style.color = '#ffffff';
+  }
+}
+
+function updateThemeToggle(theme) {
+  if (!themeToggle) return;
+  const isDark = theme === 'dark';
+  themeToggle.setAttribute('aria-pressed', isDark);
+  themeToggle.title = isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro';
+  themeToggle.textContent = isDark ? 'Claro' : 'Oscuro';
+  ensureToggleContrast(themeToggle, theme);
+}
+
+function applyTheme(theme) {
+  loadTheme(theme);
+  localStorage.setItem('theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeToggle(theme);
+}
+
+function createThemeToggle() {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn theme-toggle';
+  btn.style.marginLeft = 'var(--space-1)';
+  const header = document.querySelector('.site-header');
+  if (header) {
+    header.appendChild(btn);
+  } else {
+    btn.style.position = 'fixed';
+    btn.style.right = 'var(--space-2)';
+    btn.style.bottom = 'var(--space-2)';
+    document.body.appendChild(btn);
+  }
+  btn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+  return btn;
 }
 
 function toggleSection(id, condition) {
@@ -846,6 +928,14 @@ function handleGalleryKey(e) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const t = getPreferredTheme();
+  applyTheme(t);
+  themeToggle = createThemeToggle();
+  updateThemeToggle(t);
+  if (!localStorage.getItem('theme') && window.matchMedia) {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    media.addEventListener('change', (e) => applyTheme(e.matches ? 'dark' : 'light'));
+  }
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
   config = await loadConfig();
