@@ -61,3 +61,19 @@ document.documentElement.classList.add('high-contrast');
 Abre las herramientas de desarrollador, selecciona el elemento `<html>` y
 agrega o elimina la clase `high-contrast` para observar los cambios en las
 variables CSS y comprobar el contraste.
+
+## Widget de reserva
+
+La sección `#booking` en `index.html` contiene un `<div>` vacío con `id="booster-root"`
+marcado con `data-widget="direct-booking-placeholder"`. Un script externo debe
+montar el widget de reserva dentro de este elemento, por ejemplo:
+
+```html
+<script src="https://example.com/direct-booking.js"></script>
+<script>
+  window.DirectBooking.mount('#booster-root');
+</script>
+```
+
+Este snippet busca el contenedor y reemplaza su contenido con el widget real de
+reserva.
