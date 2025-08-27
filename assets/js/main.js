@@ -819,5 +819,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+  const hero = document.getElementById('hero');
+  if (hero && hero.querySelector('.hero-bg')) {
+    hero.classList.add('is-has-bg');
+  }
   setupBookingForm();
 });

@@ -251,25 +251,41 @@ textarea:focus-visible {
   justify-content: center;
   min-height: 70vh;
   color: var(--color-text-light);
-  background-size: cover;
-  background-position: center;
   text-align: center;
+  overflow: hidden;
 }
 
 #hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(var(--color-primary), var(--color-primary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
-#hero.hero-no-image {
-  background-color: var(--color-primary);
+#hero .hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  display: none;
+}
+
+#hero.is-has-bg .hero-bg {
+  display: block;
+}
+
+#hero.is-has-bg::before {
+  opacity: 0.6;
 }
 
 #hero .container {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero-actions {
