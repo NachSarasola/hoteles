@@ -20,6 +20,7 @@
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 2rem;
+  --radius: 0.5rem;
 }
 
 /* Global rules */
@@ -152,20 +153,30 @@ textarea:focus-visible {
 .grid {
   display: grid;
   gap: var(--spacing-md);
+}
+
+.grid-3 {
   grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .card {
   background-color: var(--color-bg);
-  border: 1px solid var(--color-primary);
-  border-radius: 4px;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: var(--spacing-md);
 }
 
-.room-card img {
+.room-card img,
+.room img {
   width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: var(--radius);
 }
 
 #gallery img {
@@ -178,13 +189,15 @@ textarea:focus-visible {
 }
 
 
-.amenity-item {
+.amenity-item,
+.amenity {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
 }
 
-.amenity-icon {
+.amenity-icon,
+.amenity .icon {
   font-size: 1.5rem;
 }
 
