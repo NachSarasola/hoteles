@@ -807,5 +807,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (widget) widget.scrollIntoView({ behavior: 'smooth' });
     });
   }
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (navToggle && nav) {
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      navToggle.setAttribute('aria-expanded', String(!expanded));
+      if (!expanded) {
+        const firstLink = nav.querySelector('a');
+        if (firstLink) firstLink.focus();
+      }
+    });
+  }
   setupBookingForm();
 });
