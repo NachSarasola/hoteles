@@ -779,6 +779,51 @@ function setupBookingForm() {
   );
 }
 
+function setupGalleryModal() {
+  const images = document.querySelectorAll('#gallery img[data-full]');
+  if (!images.length) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'gallery-modal';
+  modal.className = 'modal';
+  modal.innerHTML =
+    '<div class="modal-content"><button class="modal-close" aria-label="Cerrar">&times;</button><img src="" alt=""></div>';
+  document.body.appendChild(modal);
+
+  const modalImg = modal.querySelector('img');
+  const closeBtn = modal.querySelector('.modal-close');
+  let lastFocused = null;
+
+  function open(src, alt) {
+    lastFocused = document.activeElement;
+    modalImg.src = src;
+    modalImg.alt = alt;
+    modal.classList.add('active');
+    closeBtn.focus();
+  }
+
+  function close() {
+    modal.classList.remove('active');
+    modalImg.src = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  images.forEach((img) => {
+    img.addEventListener('click', () => open(img.dataset.full || img.src, img.alt));
+  });
+
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      close();
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
   defaultLang =
@@ -823,5 +868,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (hero && hero.querySelector('.hero-bg')) {
     hero.classList.add('is-has-bg');
   }
+  setupGalleryModal();
   setupBookingForm();
 });
