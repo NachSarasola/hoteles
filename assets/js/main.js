@@ -7,6 +7,7 @@ let defaultLang = 'es';
 const texts = {};
 let galleryImages = [];
 let currentGalleryIndex = 0;
+let lastFocusedElement = null;
 
 async function loadConfig() {
   try {
@@ -356,33 +357,49 @@ function renderAmenities(lang) {
 function updateGalleryModalImage() {
   const modal = document.getElementById('gallery-modal');
   if (!modal) return;
-  const img = modal.querySelector('img');
+  const picture = modal.querySelector('picture');
+  const img = picture ? picture.querySelector('img') : null;
+  const source = picture ? picture.querySelector('source') : null;
   if (img) {
     img.src = galleryImages[currentGalleryIndex];
     img.alt = `Imagen ${currentGalleryIndex + 1}`;
+    if (source) {
+      source.srcset = galleryImages[currentGalleryIndex].replace(/\.[^./?]+(?=\?|$)/, '.webp');
+    }
   }
 }
 
 function closeGalleryModal() {
   const modal = document.getElementById('gallery-modal');
   if (modal) modal.classList.remove('active');
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
+    lastFocusedElement = null;
+  }
 }
 
 function openGalleryModal(index) {
   currentGalleryIndex = index;
+  lastFocusedElement = document.activeElement;
   let modal = document.getElementById('gallery-modal');
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'gallery-modal';
     modal.className = 'modal gallery-modal';
+    modal.tabIndex = -1;
+    const picture = document.createElement('picture');
+    const source = document.createElement('source');
+    source.type = 'image/webp';
     const img = document.createElement('img');
     img.alt = `Imagen ${index + 1}`;
+    picture.appendChild(source);
+    picture.appendChild(img);
     const closeBtn = document.createElement('button');
     closeBtn.className = 'modal-close';
     closeBtn.innerHTML = '&times;';
     closeBtn.setAttribute('aria-label', 'Cerrar galería');
     closeBtn.addEventListener('click', closeGalleryModal);
-    modal.appendChild(img);
+    modal.appendChild(picture);
     modal.appendChild(closeBtn);
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeGalleryModal();
@@ -391,26 +408,42 @@ function openGalleryModal(index) {
   }
   updateGalleryModalImage();
   modal.classList.add('active');
+  modal.focus();
 }
 
 function renderGallery() {
   const section = document.getElementById('gallery');
   const hasGallery = Array.isArray(config.gallery) && config.gallery.length > 0;
+  toggleSection('gallery', hasGallery);
   if (!section || !hasGallery) return;
   section.innerHTML = '';
-  galleryImages = config.gallery.slice();
+  galleryImages = config.gallery.map((item) =>
+    typeof item === 'string' ? item : item.src
+  );
   const container = document.createElement('div');
   container.className = 'container';
   const grid = document.createElement('div');
   grid.className = 'grid gallery-grid';
   container.appendChild(grid);
-  galleryImages.forEach((url, idx) => {
+  config.gallery.forEach((item, idx) => {
+    const data = typeof item === 'string' ? { src: item } : item;
+    const picture = document.createElement('picture');
+    const extMatch = data.src && data.src.match(/\.[^./?]+(?=\?|$)/);
+    if (extMatch) {
+      const source = document.createElement('source');
+      source.type = 'image/webp';
+      source.srcset = data.src.replace(/\.[^./?]+(?=\?|$)/, '.webp');
+      picture.appendChild(source);
+    }
     const img = document.createElement('img');
-    img.src = url;
+    img.src = data.src;
     img.loading = 'lazy';
+    if (data.width) img.width = data.width;
+    if (data.height) img.height = data.height;
     img.alt = `Imagen ${idx + 1}`;
     img.addEventListener('click', () => openGalleryModal(idx));
-    grid.appendChild(img);
+    picture.appendChild(img);
+    grid.appendChild(picture);
   });
   section.appendChild(container);
 }
