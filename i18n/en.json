@@ -1,0 +1,17 @@
+{
+  "heroRoomsBtn": "View rooms",
+  "heroReserveBtn": "Book",
+  "bookingCta": "Book now",
+  "contact": {
+    "phone": "Phone",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Address",
+    "openMap": "Open map",
+    "directions": "Directions"
+  },
+  "seo": {
+    "metaTitle": "Paradise Hotel",
+    "metaDescription": "Discover the best accommodation."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "heroRoomsBtn": "Ver habitaciones",
+  "heroReserveBtn": "Reservar",
+  "bookingCta": "Reservar ahora",
+  "contact": {
+    "phone": "Teléfono",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "address": "Dirección",
+    "openMap": "Abrir mapa",
+    "directions": "Cómo llegar"
+  },
+  "seo": {
+    "metaTitle": "Hotel Paraíso",
+    "metaDescription": "Descubre el mejor alojamiento."
+  }
+}
