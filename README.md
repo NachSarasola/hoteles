@@ -25,6 +25,18 @@ Luego reemplaza los valores `<REPLACE_ME>` y `<REPLACE_ME_URL>` por la informaci
 
 Duplica las entradas necesarias y reemplaza los valores `<REPLACE_ME>` y `<REPLACE_ME_URL>` con la información correspondiente.
 
+## Traducciones
+
+Los textos de la interfaz se cargan desde archivos JSON ubicados en la carpeta `i18n`. Cada archivo debe nombrarse con el código de idioma, por ejemplo `i18n/fr.json`, y seguir la estructura de los archivos existentes (`es.json`, `en.json`).
+
+Para agregar un nuevo idioma:
+
+1. Crea el archivo `i18n/<codigo>.json` con todas las claves necesarias.
+2. Añade el código del idioma al arreglo `site.languages` en `config.json`.
+3. Si deseas que sea el idioma predeterminado, actualiza `site.defaultLang`.
+
+Si falta alguna clave en un idioma, el sitio usará automáticamente el valor del idioma por defecto.
+
 ## Modo de alto contraste
 
 El archivo `main.js` verifica el contraste de los colores definidos y, si alguna

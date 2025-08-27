@@ -3,45 +3,10 @@
 
 let config = {};
 let currentLang = 'es';
+let defaultLang = 'es';
+const texts = {};
 let galleryImages = [];
 let currentGalleryIndex = 0;
-
-const texts = {
-  es: {
-    heroRoomsBtn: 'Ver habitaciones',
-    heroReserveBtn: 'Reservar',
-    bookingCta: 'Reservar ahora',
-    contact: {
-      phone: 'Teléfono',
-      whatsapp: 'WhatsApp',
-      email: 'Email',
-      address: 'Dirección',
-      openMap: 'Abrir mapa',
-      directions: 'Cómo llegar'
-    },
-    seo: {
-      metaTitle: 'Hotel Paraíso',
-      metaDescription: 'Descubre el mejor alojamiento.'
-    }
-  },
-  en: {
-    heroRoomsBtn: 'View rooms',
-    heroReserveBtn: 'Book',
-    bookingCta: 'Book now',
-    contact: {
-      phone: 'Phone',
-      whatsapp: 'WhatsApp',
-      email: 'Email',
-      address: 'Address',
-      openMap: 'Open map',
-      directions: 'Directions'
-    },
-    seo: {
-      metaTitle: 'Paradise Hotel',
-      metaDescription: 'Discover the best accommodation.'
-    }
-  }
-};
 
 async function loadConfig() {
   try {
@@ -52,6 +17,39 @@ async function loadConfig() {
     const res = await fetch('config.example.json');
     return await res.json();
   }
+}
+
+async function loadTranslations(langs = [], defLang = 'es') {
+  const unique = Array.from(new Set([...(langs || []), defLang]));
+  await Promise.all(
+    unique.map(async (lang) => {
+      try {
+        const res = await fetch(`i18n/${lang}.json`);
+        if (res.ok) {
+          texts[lang] = await res.json();
+        } else {
+          texts[lang] = {};
+        }
+      } catch (e) {
+        texts[lang] = {};
+      }
+    })
+  );
+}
+
+function t(path, lang = currentLang) {
+  const keys = path.split('.');
+  let value = keys.reduce(
+    (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
+    texts[lang]
+  );
+  if (value === undefined && lang !== defaultLang) {
+    value = keys.reduce(
+      (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
+      texts[defaultLang]
+    );
+  }
+  return value;
 }
 
 function setColors() {
@@ -121,10 +119,11 @@ function toggleSection(id, condition) {
 }
 
 function applySEO(lang) {
-  const langSeo = (texts[lang] && texts[lang].seo) || {};
-  const metaTitle = langSeo.metaTitle || (config.seo && config.seo.metaTitle) || '';
+  const metaTitle = t('seo.metaTitle', lang) ||
+    (config.seo && config.seo.metaTitle) || '';
   const metaDescription =
-    langSeo.metaDescription || (config.seo && config.seo.metaDescription) || '';
+    t('seo.metaDescription', lang) ||
+    (config.seo && config.seo.metaDescription) || '';
   document.title = metaTitle;
   document.getElementById('meta-description').setAttribute('content', metaDescription);
   document.getElementById('og-title').setAttribute('content', metaTitle);
@@ -225,9 +224,8 @@ function renderHero(lang) {
       (config.site.tagline[lang] || config.site.tagline)) || '';
   if (heading) heading.textContent = name;
   if (tagline) tagline.textContent = tag;
-  const dict = texts[lang] || {};
-  if (roomsBtn) roomsBtn.textContent = dict.heroRoomsBtn || 'Ver habitaciones';
-  if (reserveBtn) reserveBtn.textContent = dict.heroReserveBtn || 'Reservar';
+  if (roomsBtn) roomsBtn.textContent = t('heroRoomsBtn', lang) || '';
+  if (reserveBtn) reserveBtn.textContent = t('heroReserveBtn', lang) || '';
   if (config.site && config.site.heroImage) {
     heroSection.style.backgroundImage = `url(${config.site.heroImage})`;
     heroSection.classList.remove('hero-no-image');
@@ -424,7 +422,14 @@ function renderLocation(lang) {
   const container = document.createElement('div');
   container.className = 'container';
 
-  const labels = (texts[lang] && texts[lang].contact) || {};
+  const labels = {
+    phone: t('contact.phone', lang) || '',
+    whatsapp: t('contact.whatsapp', lang) || '',
+    email: t('contact.email', lang) || '',
+    address: t('contact.address', lang) || '',
+    openMap: t('contact.openMap', lang) || '',
+    directions: t('contact.directions', lang) || ''
+  };
   const list = document.createElement('ul');
   list.className = 'contact-list';
 
@@ -432,7 +437,9 @@ function renderLocation(lang) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = `tel:${config.contact.phone}`;
-    a.textContent = `${labels.phone || 'Teléfono'}: ${config.contact.phone}`;
+    a.textContent = labels.phone
+      ? `${labels.phone}: ${config.contact.phone}`
+      : config.contact.phone;
     li.appendChild(a);
     list.appendChild(li);
   }
@@ -440,7 +447,9 @@ function renderLocation(lang) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = `https://wa.me/${config.contact.whatsapp}`;
-    a.textContent = `${labels.whatsapp || 'WhatsApp'}: ${config.contact.whatsapp}`;
+    a.textContent = labels.whatsapp
+      ? `${labels.whatsapp}: ${config.contact.whatsapp}`
+      : config.contact.whatsapp;
     a.target = '_blank';
     a.rel = 'noopener';
     li.appendChild(a);
@@ -450,7 +459,9 @@ function renderLocation(lang) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.href = `mailto:${config.contact.email}`;
-    a.textContent = `${labels.email || 'Email'}: ${config.contact.email}`;
+    a.textContent = labels.email
+      ? `${labels.email}: ${config.contact.email}`
+      : config.contact.email;
     li.appendChild(a);
     list.appendChild(li);
   }
@@ -459,7 +470,9 @@ function renderLocation(lang) {
     const encoded = encodeURIComponent(config.contact.address);
     const a = document.createElement('a');
     a.href = `https://www.google.com/maps?q=${encoded}`;
-    a.textContent = `${labels.address || 'Dirección'}: ${config.contact.address}`;
+    a.textContent = labels.address
+      ? `${labels.address}: ${config.contact.address}`
+      : config.contact.address;
     a.target = '_blank';
     a.rel = 'noopener';
     li.appendChild(a);
@@ -482,7 +495,7 @@ function renderLocation(lang) {
     mapLink.href = `https://www.google.com/maps?q=${encodeURIComponent(
       config.contact.address
     )}`;
-    mapLink.textContent = labels.openMap || 'Abrir mapa';
+    mapLink.textContent = labels.openMap || '';
     mapLink.className = 'btn btn-secondary';
     mapLink.target = '_blank';
     mapLink.rel = 'noopener';
@@ -494,7 +507,7 @@ function renderLocation(lang) {
     dirBtn.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
       config.contact.address
     )}`;
-    dirBtn.textContent = labels.directions || 'Cómo llegar';
+    dirBtn.textContent = labels.directions || '';
     dirBtn.className = 'btn btn-primary';
     dirBtn.target = '_blank';
     dirBtn.rel = 'noopener';
@@ -505,7 +518,12 @@ function renderLocation(lang) {
 }
 
 function renderFooter(lang) {
-  const labels = (texts[lang] && texts[lang].contact) || {};
+  const labels = {
+    phone: t('contact.phone', lang) || '',
+    whatsapp: t('contact.whatsapp', lang) || '',
+    email: t('contact.email', lang) || '',
+    address: t('contact.address', lang) || ''
+  };
   const phoneLink = document.getElementById('footer-phone');
   const emailLink = document.getElementById('footer-email');
   const policiesList = document.getElementById('footer-policies');
@@ -514,7 +532,9 @@ function renderFooter(lang) {
   const siteNameEl = document.getElementById('site-name');
 
   if (phoneLink && config.contact && config.contact.phone) {
-    phoneLink.textContent = `${labels.phone || 'Teléfono'}: ${config.contact.phone}`;
+    phoneLink.textContent = labels.phone
+      ? `${labels.phone}: ${config.contact.phone}`
+      : config.contact.phone;
     phoneLink.href = `tel:${config.contact.phone}`;
   }
 
@@ -615,9 +635,8 @@ function ensureAriaLabels() {
 }
 
 function renderUI(lang) {
-  const dict = texts[lang] || {};
   const bookingBtn = document.getElementById('booking-cta');
-  if (bookingBtn) bookingBtn.textContent = dict.bookingCta || '';
+  if (bookingBtn) bookingBtn.textContent = t('bookingCta', lang) || '';
   toggleSection('rooms', Array.isArray(config.rooms) && config.rooms.length > 0);
   toggleSection(
     'amenities',
@@ -729,13 +748,20 @@ function setupBookingForm() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   config = await loadConfig();
+  defaultLang =
+    (config.site && config.site.defaultLang) ||
+    (config.site && config.site.languages && config.site.languages[0]) ||
+    'es';
   renderLogo();
   setColors();
   enforceContrast();
   renderLanguageSwitcher();
+  await loadTranslations(
+    (config.site && config.site.languages) || [],
+    defaultLang
+  );
   insertHotelSchema();
   const stored = localStorage.getItem('lang');
-  const defaultLang = (config.site && config.site.defaultLang) || (config.site && config.site.languages && config.site.languages[0]) || 'es';
   setLanguage(stored || defaultLang);
   const selector = document.getElementById('langSwitcher');
   if (selector) {
