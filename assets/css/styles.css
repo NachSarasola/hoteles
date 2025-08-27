@@ -226,7 +226,7 @@ textarea:focus-visible {
   display: none;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal.active {
@@ -234,6 +234,7 @@ textarea:focus-visible {
 }
 
 .modal-content {
+  position: relative;
   background-color: var(--color-bg);
   padding: var(--spacing-lg);
   border-radius: 8px;
@@ -248,6 +249,12 @@ textarea:focus-visible {
   color: var(--color-text-light);
   font-size: 2rem;
   cursor: pointer;
+}
+
+.modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+  border-radius: 4px;
 }
 
 .gallery-modal img {
@@ -353,6 +360,23 @@ textarea:focus-visible {
 #location .btn {
   margin-right: var(--spacing-sm);
   margin-top: var(--spacing-md);
+}
+
+#location address {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+#location address a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+#location address a:hover,
+#location address a:focus-visible {
+  text-decoration: underline;
 }
 
 /* High contrast mode */
