@@ -825,6 +825,7 @@ function setupGalleryModal() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
+  document.getElementById('year').textContent = new Date().getFullYear();
   config = await loadConfig();
   defaultLang =
     (config.site && config.site.defaultLang) ||
