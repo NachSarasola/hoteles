@@ -1,99 +1,25 @@
-<!--
-  Purpose: Main landing page for the hoteles project.
-  Author: ChatGPT
--->
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title"></title>
-  <meta name="description" content="" id="meta-description">
-  <meta property="og:title" content="" id="og-title">
-  <meta property="og:description" content="" id="og-description">
-  <meta property="og:image" content="" id="og-image">
-  <meta property="og:url" content="" id="og-url">
-  <meta property="og:type" content="website" id="og-type">
-  <meta name="twitter:card" content="summary_large_image" id="twitter-card">
-  <meta name="twitter:title" content="" id="twitter-title">
-  <meta name="twitter:description" content="" id="twitter-description">
-  <meta name="twitter:image" content="" id="twitter-image">
-  <meta name="twitter:url" content="" id="twitter-url">
-  <script type="application/ld+json" id="hotel-schema"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-<body>
-  <!-- Section: Header -->
-  <header id="header">
-    <a href="#hero" id="logo"></a>
-    <nav id="nav" aria-label="Principal">
-      <ul id="nav-items"></ul>
-    </nav>
-    <select id="langSwitcher" aria-label="Cambiar idioma"></select>
-    <button id="reserve-btn" class="btn btn-primary">Reservar</button>
-  </header>
-
-  <main>
-    <!-- Section: Hero -->
-    <section id="hero">
-      <div class="container">
-        <h1 id="hero-heading"></h1>
-        <p id="hero-tagline"></p>
-        <div class="hero-actions">
-          <a href="#rooms" id="hero-rooms-btn" class="btn btn-secondary">Ver habitaciones</a>
-          <a href="#booking" id="hero-reserve-btn" class="btn btn-primary">Reservar</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section: Booking -->
-      <section id="booking">
-        <form id="booking-form" novalidate>
-          <div class="field">
-            <label for="checkin">Check-in</label>
-            <input type="date" id="checkin" name="checkin" required />
-            <span class="error" id="checkin-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <label for="checkout">Check-out</label>
-            <input type="date" id="checkout" name="checkout" required />
-            <span class="error" id="checkout-error" aria-live="polite"></span>
-          </div>
-          <div class="field">
-            <label for="guests">Huéspedes</label>
-            <input type="number" id="guests" name="guests" min="1" required />
-            <span class="error" id="guests-error" aria-live="polite"></span>
-          </div>
-          <button type="submit" id="booking-cta"></button>
-        </form>
-      </section>
-
-    <!-- Section: Rooms -->
-    <section id="rooms"></section>
-
-    <!-- Section: Amenities -->
-    <section id="amenities"></section>
-
-    <!-- Section: Gallery -->
-    <section id="gallery"></section>
-
-    <!-- Section: Location -->
-    <section id="location"></section>
-  </main>
-
-  <!-- Section: Footer -->
-  <footer id="footer">
-    <div class="container">
-      <ul id="footer-contact" class="footer-links">
-        <li><a id="footer-phone" href="#"></a></li>
-        <li><a id="footer-email" href="#"></a></li>
-      </ul>
-      <ul id="footer-policies" class="footer-links"></ul>
-      <ul id="footer-social" class="footer-links"></ul>
-      <p>© <span id="year"></span> <span id="site-name"></span></p>
-    </div>
-  </footer>
-
-  <script src="assets/js/main.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="<REPLACE_ME>">
+    <title><REPLACE_ME></title>
+    <meta name="description" content="<REPLACE_ME>">
+    <meta property="og:title" content="<REPLACE_ME>">
+    <meta property="og:description" content="<REPLACE_ME>">
+    <meta property="og:image" content="<REPLACE_ME>">
+    <meta property="og:url" content="<REPLACE_ME>">
+    <meta property="og:type" content="<REPLACE_ME>">
+    <meta name="twitter:card" content="<REPLACE_ME>">
+    <meta name="twitter:title" content="<REPLACE_ME>">
+    <meta name="twitter:description" content="<REPLACE_ME>">
+    <meta name="twitter:image" content="<REPLACE_ME>">
+    <meta name="twitter:url" content="<REPLACE_ME>">
+    <link rel="canonical" href="<REPLACE_ME_URL>">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+  </head>
+  <body>
+    <script src="/assets/js/main.js" defer></script>
+  </body>
 </html>
