@@ -5,7 +5,16 @@
 
 # Hoteles
 
-Estructura básica para el proyecto Hoteles.
+Plantilla mínima para crear sitios de hoteles estáticos.
+
+## Estructura de carpetas
+
+- `assets/css/`: hoja de estilos principal (`styles.css`).
+- `assets/img/`: imágenes del sitio.
+- `assets/js/`: scripts de interacción.
+- `i18n/`: archivos de traducción.
+- `index.html`: página base de ejemplo.
+- `config.json`: configuración del sitio.
 
 ## Configuración
 
@@ -24,6 +33,17 @@ Luego reemplaza los valores `<REPLACE_ME>` y `<REPLACE_ME_URL>` por la informaci
 - **social**: enlaces a redes sociales. Usa `platform` para identificar la red y `url` para la dirección.
 
 Duplica las entradas necesarias y reemplaza los valores `<REPLACE_ME>` y `<REPLACE_ME_URL>` con la información correspondiente.
+
+## Personalización de estilos e imágenes
+
+### Variables CSS
+Edita `assets/css/styles.css` en el bloque `:root` para ajustar colores, radios y espaciados. Se incluye un bloque `@media (prefers-color-scheme: dark)` para adaptar los tonos en modo oscuro si lo deseas.
+
+### Imágenes
+Sube los archivos a `assets/img/` y referencia su ruta desde HTML o CSS.
+
+### Marcadores `<REPLACE_ME>` y `EDIT_ME`
+Busca estos marcadores en todo el proyecto y sustitúyelos por la información real del sitio.
 
 ## Traducciones
 
@@ -69,11 +89,19 @@ marcado con `data-widget="direct-booking-placeholder"`. Un script externo debe
 montar el widget de reserva dentro de este elemento, por ejemplo:
 
 ```html
-<script src="https://example.com/direct-booking.js"></script>
+<script src="/widget/booster.js" defer></script>
 <script>
-  window.DirectBooking.mount('#booster-root');
+  window.addEventListener('load', () => {
+    BOOster.mount('#booster-root','<REPLACE_ME_CONFIG_URL>')
+  });
 </script>
 ```
 
 Este snippet busca el contenedor y reemplaza su contenido con el widget real de
 reserva.
+
+## Recomendaciones
+
+- Asegura un contraste mínimo de 4.5:1 entre texto y fondo.
+- Utiliza unidades relativas (`rem`) y las variables `--space-*` para tamaños y espaciado.
+- Para agregar nuevas secciones, duplica un bloque `<section>` en `index.html`, asigna un `id` único y actualiza la navegación.

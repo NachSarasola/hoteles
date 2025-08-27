@@ -14,6 +14,14 @@
   --space-3: 2rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1a1a1a; /* EDIT_ME */
+    --color-text: #f0f0f0; /* EDIT_ME */
+    --color-muted: #999999; /* EDIT_ME */
+  }
+}
+
 /* Global rules */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -24,6 +32,22 @@ body {
   font-family: system-ui, sans-serif;
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -40px;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: var(--space-2);
 }
 
 /* Utilities */
