@@ -372,6 +372,7 @@ function updateGalleryModalImage() {
 function closeGalleryModal() {
   const modal = document.getElementById('gallery-modal');
   if (modal) modal.classList.remove('active');
+  document.removeEventListener('keydown', handleGalleryKey);
   if (lastFocusedElement) {
     lastFocusedElement.focus();
     lastFocusedElement = null;
@@ -409,6 +410,7 @@ function openGalleryModal(index) {
   updateGalleryModalImage();
   modal.classList.add('active');
   modal.focus();
+  document.addEventListener('keydown', handleGalleryKey);
 }
 
 function renderGallery() {
@@ -824,8 +826,28 @@ function setupGalleryModal() {
   });
 }
 
+function toggleMenu() {
+  const navToggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!navToggle || !nav) return;
+  const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+  navToggle.setAttribute('aria-expanded', String(!expanded));
+  nav.classList.toggle('is-open', !expanded);
+  if (!expanded) {
+    const firstLink = nav.querySelector('a');
+    if (firstLink) firstLink.focus();
+  }
+}
+
+function handleGalleryKey(e) {
+  if (e.key === 'Escape') {
+    closeGalleryModal();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
-  document.getElementById('year').textContent = new Date().getFullYear();
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
   config = await loadConfig();
   defaultLang =
     (config.site && config.site.defaultLang) ||
@@ -853,17 +875,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (widget) widget.scrollIntoView({ behavior: 'smooth' });
     });
   }
-  const navToggle = document.querySelector('.nav-toggle');
-  const nav = document.getElementById('primary-nav');
-  if (navToggle && nav) {
-    navToggle.addEventListener('click', () => {
-      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', String(!expanded));
-      if (!expanded) {
-        const firstLink = nav.querySelector('a');
-        if (firstLink) firstLink.focus();
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const id = link.getAttribute('href');
+      if (id && id.length > 1) {
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     });
+  });
+
+  const navToggle = document.querySelector('.nav-toggle');
+  if (navToggle) {
+    navToggle.addEventListener('click', toggleMenu);
   }
   const hero = document.getElementById('hero');
   if (hero && hero.querySelector('.hero-bg')) {
